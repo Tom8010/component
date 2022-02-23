@@ -9,17 +9,23 @@ interface interface_component {
   events(): void;
 }
 
+interface datosDeComponent {
+  className: string;
+  id: string;
+  father: string;
+}
+
+interface datosDeComponentInput extends datosDeComponent {
+  type: string;
+}
+
 export default class Component implements interface_component {
   name: string;
   /*componente padre*/
   component: any;
   /*guardado de datos de la clase*/
   memory = [];
-
-  constructor(
-    tagName: string,
-    { className, id, father }: { className: string; id: string; father: any }
-  ) {
+  constructor(tagName: string, { className, id, father }: datosDeComponent) {
     this.name = id || className;
     /*creation;*/
     this.component = document.createElement(tagName);
@@ -45,7 +51,7 @@ export default class Component implements interface_component {
     });
   }
   assignationElement(...childElement: any) {
-    [childElement].forEach(x => this.component.appendChild(x));
+    [childElement].forEach((x) => this.component.appendChild(x));
   }
   stir(...child: any) {
     child.forEach((x: any) => {
@@ -62,5 +68,15 @@ export class ComponentArticle extends Component {
 export class ComponentSection extends Component {
   constructor({ className, id, father }) {
     super("section", { className, id, father });
+  }
+}
+export class ComponentInput extends Component {
+  constructor({ className, id, father, type }: datosDeComponentInput) {
+    super("input", { className, id, father });
+    let _type: string = type;
+    _type ? this.addType(_type) : 0;
+  }
+  addType(_type: string) {
+    this.component.type = _type;
   }
 }
