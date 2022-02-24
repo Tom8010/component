@@ -8,15 +8,15 @@ interface interface_component {
   stir(...child: any): void;
   events(): void;
 }
-
 interface datosDeComponent {
   className: string;
   id: string;
   father: string;
 }
-
 interface datosDeComponentInput extends datosDeComponent {
-  type: string;
+  _type: string;
+  _placeholder: string;
+  _name: string;
 }
 
 export default class Component implements interface_component {
@@ -71,12 +71,26 @@ export class ComponentSection extends Component {
   }
 }
 export class ComponentInput extends Component {
-  constructor({ className, id, father, type }: datosDeComponentInput) {
+  constructor({
+    className,
+    id,
+    father,
+    _type,
+    _placeholder,
+    _name,
+  }: datosDeComponentInput) {
     super("input", { className, id, father });
-    let _type: string = type;
     _type ? this.addType(_type) : 0;
+    _name ? this.addName(_name) : 0;
+    _placeholder ? this.addPlaceHolder(_placeholder) : 0;
   }
   addType(_type: string) {
     this.component.type = _type;
+  }
+  addName(_name: string) {
+    this.component.name = _name;
+  }
+  addPlaceHolder(_placeholder: string) {
+    this.component.placeholder = _placeholder;
   }
 }
